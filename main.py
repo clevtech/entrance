@@ -16,14 +16,10 @@ from flask import Flask, render_template, session, request, json, jsonify, url_f
 import random
 import re
 from pprint import pprint
-from flask_socketio import SocketIO, emit, join_room, leave_room, \
-	close_room, rooms, disconnect
 import random
 from threading import Lock
 import json
 import socket
-from pymongo import*
-from pymongo import MongoClient
 from flask import Markup
 import copy
 import base64
