@@ -1,2 +1,1 @@
-# entrance
-Entrance control system for NurOtan
+sudo apt-get install fswebcam
