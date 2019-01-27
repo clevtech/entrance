@@ -57,7 +57,7 @@ def welcome3():
 		name += str(let)
 	print("name is " + str(name))
 	print("value is " + text)
-	with open('./static/logs/' + name + '.txt', "w") as file:
+	with open('/home/pi/entrance/static/logs/' + name + '.txt', "w") as file:
 		data = file.write(text)
 	return render_template('zayava.html', text = "Код доступа: " + str(name))
 
@@ -77,18 +77,18 @@ def chechit():
 	if request.method=="POST":
 		kod = request.form['kod']
 		try:
-			command = "fswebcam ./static/face.png"
+			command = "fswebcam /home/pi/entrance/static/face.png"
 			process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 			process.wait()
 			print(process.returncode)
-			with open('./static/logs/' + kod + '.txt', "r") as file:
+			with open('/home/pi/entrance/static/logs/' + kod + '.txt', "r") as file:
 				data = file.readline()
 				data2 = data.split(":")
 				data3 = "Заказал пропуск: " + str(data2[0])
 				data3 += ", в кабинет: : " + str(data2[2])
 				data3 += ", для гражданина: : " + str(data2[1])
-				send_tlg_msg(data3, ['-1001403922890'], open('./static/face.png', "rb"))
-			os.system("rm ./static/logs/" + kod + '.txt')
+				send_tlg_msg(data3, ['-1001403922890'], open('/home/pi/entrance/static/face.png', "rb"))
+			os.system("rm /home/pi/entrance/static/logs/" + kod + '.txt')
 		except:
 			return render_template('index2.html', text=Markup("Вы ввели неправильный пароль"))
 		return render_template('index2.html', text=Markup("Входите"))
