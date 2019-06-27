@@ -78,7 +78,7 @@ def chechit():
 	if request.method=="POST":
 		kod = request.form['kod']
 		try:
-			command = "fswebcam /home/pi/entrance/static/face.png"
+			command = "fswebcam --rotate 90 /home/pi/entrance/static/face.png"
 			process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 			process.wait()
 			print(process.returncode)
