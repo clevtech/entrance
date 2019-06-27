@@ -1,12 +1,12 @@
 {
   "name": "Cleverest Technologies",
-  "short_name": "ClevTech",
+  "short_name": "Entrance System",
   "description": "Cleverest Technologies web app",
   "theme_color": "transparent",
   "background_color": "transparent",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/",
+  "scope": "/mobile/",
   "start_url": "/mobile/",
   "icons": [
     {
