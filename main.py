@@ -40,14 +40,15 @@ def send_tlg_msg(msg, ids, photo):
 			pass
 
 
-@app.route('/zayavka/', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def welcome2():
 	return render_template('zayava.html', text = "Введите данные:")
 
 
-@app.route('/zayavka/check/', methods=['GET','POST'])
+@app.route('/check/', methods=['GET','POST'])
 def welcome3():
-	text = request.form['FIOin'] + ":" + request.form['FIOout'] + ":" + request.form['room']
+	text = request.form['FIOin'] + ":" + request.form['FIOout'] + ":" + request.form['room'] + \
+           ":" + str(request.remote_addr)
 	first = random.choice(range(1, 10))
 	leftover = set(range(10)) - {first}
 	rest = random.sample(leftover, 5)
@@ -62,7 +63,7 @@ def welcome3():
 	return render_template('zayava.html', text = "Код доступа: " + str(name))
 
 
-@app.route('/')
+@app.route('/mobile/')
 def welcome():
 	return render_template('index3.html')
 
