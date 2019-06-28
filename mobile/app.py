@@ -79,9 +79,10 @@ def send_tlg_msg(msg, ids, photo):
 
             print(requests.get(head))
 
-            command = 'curl -s -X POST "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso' \
-                      '/sendPhoto" -F chat_id="' + id + '" -F photo="face.jpeg"'
-            subprocess.call(command.split(' '))
+            head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendPhoto?chat_id=" + \
+                   id + "&photo=" + photo
+
+            print(requests.get(head))
 
 
 
