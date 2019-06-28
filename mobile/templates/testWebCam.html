@@ -119,8 +119,10 @@
         });
 
        function myFunction() {
+            alert("YES!");
             context.drawImage(player, 0, 0, canvas.width, canvas.height);
             document.getElementsByName("img")[0].setAttribute("value", canvas.toDataURL('image/jpeg'));
+            alert("No?");
         }
     </script>
 

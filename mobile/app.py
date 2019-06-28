@@ -122,6 +122,8 @@ def chechit():
             return render_template('index2.html', text=Markup("Входите"))
         else:
             return render_template('index2.html', text=Markup("Вы ввели неправильный пароль"))
+    else:
+        return render_template('index3.html', text=Markup("Вы ввели неправильный пароль"))
 
 
 if __name__ == '__main__':
