@@ -68,8 +68,8 @@ def logit(req):
 
 
 def send_tlg_msg(msg, ids, photo):
-    # with open('face.jpeg', 'wb') as file:
-    #     file.write(photo)
+    with open('face.jpeg', 'wb') as file:
+        file.write(photo)
     for id in ids:
         try:
             from requests import Request, Session
@@ -81,7 +81,7 @@ def send_tlg_msg(msg, ids, photo):
 
             head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + \
                     id
-            files = {'photo': photo}
+            files = {'photo': open('face.jpeg', 'rb')}
 
             print(requests.post(head2, files=files))
 
