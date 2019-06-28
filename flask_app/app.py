@@ -106,7 +106,7 @@ if __name__ == '__main__':
     PRIVCERT = "./flask_app/cert.pem"
     PRIVKEY = "./flask_app/key.pem"
 
-    https_server = WSGIServer((HOST, HTTPS_PORT), app, keyfile=PRIVKEY, certfile=CERT)
+    https_server = WSGIServer((HOST, HTTPS_PORT), app, keyfile=PRIVKEY, certfile=PRIVCERT)
     https_server.start()
 
     http_server = WSGIServer((HOST, HTTP_PORT), app)
