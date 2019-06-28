@@ -8,6 +8,9 @@ __maintainer__ = "Bauyrzhan Ospan"
 __email__ = "bospan@cleverest.tech"
 __status__ = "Development"
 
+from gevent import monkey
+monkey.patch_all()
+
 import subprocess
 import requests
 import glob
@@ -24,6 +27,11 @@ from flask import Markup
 import copy
 import base64
 import telepot
+import gevent
+from gevent.pywsgi import WSGIServer
+
+
+async_mode = None
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -92,4 +100,18 @@ def chechit():
 
 if __name__ == '__main__':
     print(os.system("ls"))
-    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=('./flask_app/cert.pem', './flask_app/key.pem'))
+    HOST = "0.0.0.0"
+    HTTPS_PORT = 443
+    HTTP_PORT = 80
+    PRIVCERT = "./flask_app/cert.pem"
+    PRIVKEY = "./flask_app/key.pem"
+
+    https_server = WSGIServer((HOST, HTTPS_PORT), app, keyfile=PRIVKEY, certfile=CERT)
+    https_server.start()
+
+    http_server = WSGIServer((HOST, HTTP_PORT), app)
+    http_server.start()
+
+    while True:
+        gevent.sleep(60)
+    # socketio.run(app, host='0.0.0.0', port=443, debug=True, ssl_context=('./flask_app/cert.pem', './flask_app/key.pem'))
