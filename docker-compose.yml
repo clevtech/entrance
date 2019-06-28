@@ -22,7 +22,7 @@ services:
     build: ./mobile
     command: python3 -u ./mobile/app.py
     ports:
-      - "7777:7777"
+      - "443:443"
     volumes:
       - .:/cleverest_machine
     links:

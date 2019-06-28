@@ -151,4 +151,4 @@ def chechit():
 
 if __name__ == '__main__':
     print(os.system("ls"))
-    app.run(host='0.0.0.0', port=7777, debug=True, ssl_context=('./mobile/cert.pem', './mobile/key.pem'))
+    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=('./mobile/cert.pem', './mobile/key.pem'))
