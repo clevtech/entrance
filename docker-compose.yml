@@ -1,0 +1,10 @@
+version: "3"
+services:
+  tcp-server:
+    restart: always
+    build: ./flask_app
+    command: python3 -u ./flask_app/app.py
+    ports:
+      - "443:443"
+    volumes:
+      - .:/cleverest_machine
