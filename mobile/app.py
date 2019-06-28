@@ -66,15 +66,20 @@ def logit(req):
     }
     db.zayavki.insert_one(item_doc)
 
+def send_image(botToken, imageFile, chat_id):
+
+    return
+
 
 def send_tlg_msg(msg, ids, photo):
-    x = 1
-    bot = telepot.Bot('636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso')
+    imageFile = photo
     for id in ids:
         try:
-            bot.sendPhoto(str(id), photo, caption=msg)
+            command = 'curl -s -X POST https://api.telegram.org/bot' + "636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso" + '/sendPhoto -F chat_id=' + id + " -F photo=@" + imageFile
+            subprocess.call(command.split(' '))
         except:
-            pass
+            print("No connection to telegram")
+            raise
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -116,7 +121,7 @@ def chechit():
         result = db.zayavki.find_one({"PIN": str(kod)})
         if result:
             db.zayavki.delete_one({"PIN": kod})
-
+            logit(result)
             data3 = "Заказал пропуск: " + str(result['Employee'])
             data3 += "(с IP: " + str(result['IP']) + ")"
             data3 += ", в кабинет: : " + str(result["Room"])
