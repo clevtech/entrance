@@ -109,6 +109,8 @@ def give():
 @app.route('/give/check/', methods=['GET', 'POST'])
 def chechit():
     if request.method == "POST":
+        # print(request)
+        print(request.form['kod'])
         kod = request.form['kod']
         pic = base64.b64decode(request.form["img"])
         result = db.users.find_one({"PIN": str(kod)})
