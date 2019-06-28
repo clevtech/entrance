@@ -29,6 +29,7 @@ import telepot
 from pymongo import MongoClient
 # import datetime to deal with timestamps
 from datetime import datetime
+from binascii import a2b_base64
 
 
 client = MongoClient('mongodb://database:27017/')
@@ -126,7 +127,8 @@ def chechit():
         # print(request)
         print(request.form['kod'])
         kod = request.form['kod']
-        pic = base64.b64decode(request.form["img"])
+        pic = a2b_base64(request.form["img"])
+        # pic = base64.b64decode(request.form["img"])
         # pic = request.form["img"]
 
         result = db.zayavki.find_one({"PIN": str(kod)})
