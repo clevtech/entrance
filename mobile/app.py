@@ -72,7 +72,10 @@ def send_image(botToken, imageFile, chat_id):
 
 
 def send_tlg_msg(msg, ids, photo):
-    imageFile = photo
+    with open('face.jpeg', 'w') as file:
+        file.write(photo)
+    with open('face.jpeg', 'r') as file:
+        imageFile = file
     for id in ids:
         try:
             command = 'curl -s -X POST https://api.telegram.org/bot' + "636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso" + '/sendPhoto -F chat_id=' + id + " -F photo=@" + imageFile
