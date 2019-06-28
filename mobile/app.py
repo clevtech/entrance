@@ -11,6 +11,7 @@ __status__ = "Development"
 import subprocess
 import requests
 import glob
+import base64
 import os
 from flask import Flask, render_template, session, request, json, jsonify, url_for, Markup, redirect
 import random
@@ -45,7 +46,7 @@ def write_to(request, pin):
         'Room': request.form['room'],
         'Date': datetime.now(),
         'IP': str(request.remote_addr),
-        'PIN': pin,
+        'PIN': str(pin),
         'GuestIn': False,
         'DateIn': None
     }
@@ -109,7 +110,8 @@ def give():
 def chechit():
     if request.method == "POST":
         kod = request.form['kod']
-        result = db.users.find_one({"PIN": kod})
+        pic = base64.b64decode(request.form["img"])
+        result = db.users.find_one({"PIN": str(kod)})
         if result:
             db.users.delete_one({"PIN": kod})
 
@@ -117,7 +119,7 @@ def chechit():
             data3 += "(с IP: " + str(result['IP']) + ")"
             data3 += ", в кабинет: : " + str(result["Room"])
             data3 += ", для гражданина: : " + str(result['Guest'])
-            send_tlg_msg(data3, ['-1001403922890'], open('/home/pi/entrance/static/face.png', "rb"))
+            send_tlg_msg(data3, ['-1001403922890'], pic)
 
             return render_template('index2.html', text=Markup("Входите"))
         else:
