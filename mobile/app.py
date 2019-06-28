@@ -131,6 +131,7 @@ def chechit():
         print(request.form['kod'])
         kod = request.form['kod']
         pic = base64.b64decode(request.form["img"])
+        return pic
         with open('face.jpeg', 'wb') as file:
             file.write(pic)
         return send_file('face.jpeg', mimetype='image/jpeg')

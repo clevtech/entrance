@@ -120,6 +120,7 @@
 
        function myFunction() {
             context.drawImage(player, 0, 0, canvas.width, canvas.height);
+            context.rotate(Math.PI / 2);
             document.getElementsByName("img")[0].setAttribute("value", canvas.toDataURL('image/jpeg'));
         }
     </script>
