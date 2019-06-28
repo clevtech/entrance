@@ -77,10 +77,17 @@ def send_tlg_msg(msg, ids, photo):
     imageFile = "./face.jpeg"
     for id in ids:
         try:
-            command = 'curl -s -X POST https://api.telegram.org/bot' + "636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso" + '/sendPhoto -F chat_id=' + id + " -F photo=@" + imageFile
-            subprocess.call(command.split(' '))
-            cmd = 'curl -s -X POST https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage -d chat_id=' + id + ' -d text="' + msg + '"'
-            subprocess.call(cmd.split(' '))
+            from requests import Request, Session
+
+            head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + id + "&text=" + msg
+
+            print(requests.get(head))
+
+            head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + id + "&photo=" + imageFile
+
+            print(requests.get(head2))
+
+
         except:
             print("No connection to telegram")
             raise
