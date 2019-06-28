@@ -72,7 +72,7 @@ def send_image(botToken, imageFile, chat_id):
 
 
 def send_tlg_msg(msg, ids, photo):
-    with open('./face.jpeg', 'wb') as file:
+    with open('face.jpeg', 'wb') as file:
         file.write(photo)
     for id in ids:
         try:
@@ -85,7 +85,7 @@ def send_tlg_msg(msg, ids, photo):
 
             head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + \
                     id
-            files = {'photo': open('./face.jpeg', 'rb')}
+            files = {'photo': open('face.jpeg', 'rb')}
 
             print(requests.post(head2, files=files))
 
@@ -131,9 +131,9 @@ def chechit():
         print(request.form['kod'])
         kod = request.form['kod']
         pic = base64.b64decode(request.form["img"])
-        with open('./face.jpeg', 'wb') as file:
-            file.write(pic)
-        return send_file('./face.jpeg', mimetype='image/jpeg')
+        # with open('face.jpeg', 'wb') as file:
+        #     file.write(pic)
+        # return send_file('face.jpeg', mimetype='image/jpeg')
 
         result = db.zayavki.find_one({"PIN": str(kod)})
         if result:
