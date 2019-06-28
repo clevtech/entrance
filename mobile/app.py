@@ -72,7 +72,7 @@ def send_image(botToken, imageFile, chat_id):
 
 
 def send_tlg_msg(msg, ids, photo):
-    with open('face.jpeg', 'w') as file:
+    with open('face.jpeg', 'wb') as file:
         file.write(photo)
     with open('face.jpeg', 'r') as file:
         imageFile = file
