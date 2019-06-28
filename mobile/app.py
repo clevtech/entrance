@@ -82,15 +82,13 @@ def send_tlg_msg(msg, ids, photo):
 
             head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + \
                     id
-            files = {'photo': open('face.jpeg', 'rb')}
+            files = {'photo': photo}
 
-            head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + \
-                   id + "&text=" + str(requests.post(head2, files=files))
+            print(requests.post(head2, files=files))
 
 
         except:
             print("No connection to telegram")
-            raise
 
 
 @app.route('/', methods=['GET', 'POST'])
