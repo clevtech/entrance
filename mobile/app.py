@@ -8,9 +8,6 @@ __maintainer__ = "Bauyrzhan Ospan"
 __email__ = "bospan@cleverest.tech"
 __status__ = "Development"
 
-from gevent import monkey
-monkey.patch_all()
-
 import subprocess
 import requests
 import glob
@@ -29,8 +26,6 @@ import base64
 import telepot
 # import python-mongo library
 from pymongo import MongoClient
-from flask_socketio import SocketIO, emit, join_room, leave_room, \
-	close_room, rooms, disconnect
 # import datetime to deal with timestamps
 from datetime import datetime
 
@@ -39,13 +34,8 @@ client = MongoClient('mongodb://database:27017/')
 db = client.entrance
 
 
-async_mode = None
-
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-socketio = SocketIO(app, async_mode=async_mode)
-thread = None
-thread_lock = Lock()
 
 
 def write_to(request, pin):
@@ -136,4 +126,4 @@ def chechit():
 
 if __name__ == '__main__':
     print(os.system("ls"))
-    socketio.run(app, host='0.0.0.0', port=7777, debug=True, ssl_context=('./flask_app/cert.pem', './flask_app/key.pem'))
+    app.run(host='0.0.0.0', port=7777, debug=True, ssl_context=('./mobile/cert.pem', './mobile/key.pem'))
