@@ -134,7 +134,7 @@ def chechit():
         with open('face.jpeg', 'wb') as file:
             file.write(pic)
             print(os.system("ls"))
-        return send_file('face.jpeg', mimetype='image/jpeg')
+        return send_file('../face.jpeg', mimetype='image/jpeg')
 
         result = db.zayavki.find_one({"PIN": str(kod)})
         if result:
