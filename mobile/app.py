@@ -84,7 +84,8 @@ def send_tlg_msg(msg, ids, photo):
                     id
             files = {'photo': open('face.jpeg', 'rb')}
 
-            print(requests.post(head2, files=files))
+            head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + \
+                   id + "&text=" + str(requests.post(head2, files=files))
 
 
         except:
