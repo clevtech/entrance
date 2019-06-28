@@ -29,6 +29,8 @@ import base64
 import telepot
 # import python-mongo library
 from pymongo import MongoClient
+from flask_socketio import SocketIO, emit, join_room, leave_room, \
+	close_room, rooms, disconnect
 # import datetime to deal with timestamps
 from datetime import datetime
 
