@@ -72,8 +72,10 @@ def send_image(botToken, imageFile, chat_id):
 
 
 def send_tlg_msg(msg, ids, photo):
+    file1 = None
     with open('./face.jpeg', 'wb') as file:
         file.write(photo)
+        file1 = file
     imageFile = "./face.jpeg"
     for id in ids:
         try:
@@ -83,9 +85,10 @@ def send_tlg_msg(msg, ids, photo):
 
             print(requests.get(head))
 
-            head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + id + "&photo=" + imageFile
+            head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + id
+            files = {'photo': open('./face.jpeg', 'rb')}
 
-            print(requests.get(head2))
+            print(requests.post(head2, files=files))
 
 
         except:
