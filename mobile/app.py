@@ -124,7 +124,7 @@ def chechit():
         # print(request)
         print(request.form['kod'])
         kod = request.form['kod']
-        pic = a2b_base64(request.form["img"])
+        pic = a2b_base64(request.form["img"].split(",")[1])
         # pic = base64.b64decode(request.form["img"])
         # pic = request.form["img"]
 
