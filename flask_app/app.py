@@ -28,7 +28,6 @@ import socket
 from flask import Markup
 import copy
 import base64
-import telepot
 # import python-mongo library
 from pymongo import MongoClient
 # import datetime to deal with timestamps
