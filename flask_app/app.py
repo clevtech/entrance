@@ -27,14 +27,51 @@ from flask import Markup
 import copy
 import base64
 import telepot
-import gevent
-from gevent.pywsgi import WSGIServer
+# import python-mongo library
+from pymongo import MongoClient
+# import datetime to deal with timestamps
+from datetime import datetime
+
+
+client = MongoClient('mongodb://database:27017/')
+db = client.entrance
 
 
 async_mode = None
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
+socketio = SocketIO(app, async_mode=async_mode)
+thread = None
+thread_lock = Lock()
+
+
+def write_to(request, pin):
+    item_doc = {
+        'Employee': request.form['FIOin'],
+        'Guest': request.form['FIOout'],
+        'Room': request.form['room'],
+        'Date': datetime.now(),
+        'IP': str(request.remote_addr),
+        'PIN': pin,
+        'GuestIn': False,
+        'DateIn': None
+    }
+    db.zayavki.insert_one(item_doc)
+
+
+def logit(req):
+    item_doc = {
+        'Employee': req['Employee'],
+        'Guest': req['Guest'],
+        'Room': req['Room'],
+        'Date': req['Date'],
+        'IP': req['IP'],
+        'PIN': None,
+        'GuestIn': True,
+        'DateIn': datetime.now()
+    }
+    db.zayavki.insert_one(item_doc)
 
 
 def send_tlg_msg(msg, ids, photo):
@@ -54,8 +91,6 @@ def welcome2():
 
 @app.route('/check/', methods=['GET', 'POST'])
 def welcome3():
-    text = request.form['FIOin'] + ":" + request.form['FIOout'] + ":" + request.form['room'] + \
-           ":" + str(request.remote_addr)
     first = random.choice(range(1, 10))
     leftover = set(range(10)) - {first}
     rest = random.sample(leftover, 5)
@@ -64,9 +99,7 @@ def welcome3():
     for let in digits:
         name += str(let)
     print("name is " + str(name))
-    print("value is " + text)
-    with open('/home/pi/entrance/static/logs/' + name + '.txt', "w") as file:
-        data = file.write(text)
+    write_to(request, name)
     return render_template('zayava.html', text="Код доступа: " + str(name))
 
 
@@ -84,34 +117,21 @@ def give():
 def chechit():
     if request.method == "POST":
         kod = request.form['kod']
-        try:
-            with open('/home/pi/entrance/static/logs/' + kod + '.txt', "r") as file:
-                data = file.readline()
-                data2 = data.split(":")
-                data3 = "Заказал пропуск: " + str(data2[0])
-                data3 += ", в кабинет: : " + str(data2[2])
-                data3 += ", для гражданина: : " + str(data2[1])
-                send_tlg_msg(data3, ['-1001403922890'], open('/home/pi/entrance/static/face.png', "rb"))
-            os.system("rm /home/pi/entrance/static/logs/" + kod + '.txt')
-        except:
+        result = db.users.find_one({"PIN": kod})
+        if result:
+            db.users.delete_one({"PIN": kod})
+
+            data3 = "Заказал пропуск: " + str(result['Employee'])
+            data3 += "(с IP: " + str(result['IP']) + ")"
+            data3 += ", в кабинет: : " + str(result["Room"])
+            data3 += ", для гражданина: : " + str(result['Guest'])
+            send_tlg_msg(data3, ['-1001403922890'], open('/home/pi/entrance/static/face.png', "rb"))
+
+            return render_template('index2.html', text=Markup("Входите"))
+        else:
             return render_template('index2.html', text=Markup("Вы ввели неправильный пароль"))
-        return render_template('index2.html', text=Markup("Входите"))
 
 
 if __name__ == '__main__':
     print(os.system("ls"))
-    HOST = "0.0.0.0"
-    HTTPS_PORT = 443
-    HTTP_PORT = 80
-    PRIVCERT = "./flask_app/cert.pem"
-    PRIVKEY = "./flask_app/key.pem"
-
-    https_server = WSGIServer((HOST, HTTPS_PORT), app, keyfile=PRIVKEY, certfile=PRIVCERT)
-    https_server.start()
-
-    http_server = WSGIServer((HOST, HTTP_PORT), app)
-    http_server.start()
-
-    while True:
-        gevent.sleep(60)
-    # socketio.run(app, host='0.0.0.0', port=443, debug=True, ssl_context=('./flask_app/cert.pem', './flask_app/key.pem'))
+    socketio.run(app, host='0.0.0.0', port=443, debug=True, ssl_context=('./flask_app/cert.pem', './flask_app/key.pem'))
