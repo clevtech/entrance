@@ -5,7 +5,24 @@ services:
     build: ./flask_app
     command: python3 -u ./flask_app/app.py
     ports:
-      - "443:443"
+      - "80:80"
+    volumes:
+      - .:/cleverest_machine
+    links:
+      - database
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "10"
+    depends_on:
+      - database
+  mobile:
+    restart: always
+    build: ./mobile
+    command: python3 -u ./mobile/app.py
+    ports:
+      - "7777:7777"
     volumes:
       - .:/cleverest_machine
     links:

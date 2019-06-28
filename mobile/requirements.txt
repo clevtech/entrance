@@ -1,0 +1,7 @@
+requests==2.18.4
+telepot==12.7
+Flask==1.0.2
+gevent
+pymongo
+Flask_SocketIO==3.0.2
+Werkzeug==0.14.1

@@ -134,4 +134,4 @@ def chechit():
 
 if __name__ == '__main__':
     print(os.system("ls"))
-    socketio.run(app, host='0.0.0.0', port=80, debug=True)
+    socketio.run(app, host='0.0.0.0', port=7777, debug=True, ssl_context=('./flask_app/cert.pem', './flask_app/key.pem'))
