@@ -127,7 +127,7 @@ def chechit():
         print(request.form['kod'])
         kod = request.form['kod']
         pic = base64.b64decode(request.form["img"])
-        pic = request.form["img"]
+        # pic = request.form["img"]
 
         result = db.zayavki.find_one({"PIN": str(kod)})
         if result:
