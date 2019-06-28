@@ -113,9 +113,9 @@ def chechit():
         print(request.form['kod'])
         kod = request.form['kod']
         pic = base64.b64decode(request.form["img"])
-        result = db.users.find_one({"PIN": str(kod)})
+        result = db.entrance.find_one({"PIN": str(kod)})
         if result:
-            db.users.delete_one({"PIN": kod})
+            db.entrance.delete_one({"PIN": kod})
 
             data3 = "Заказал пропуск: " + str(result['Employee'])
             data3 += "(с IP: " + str(result['IP']) + ")"

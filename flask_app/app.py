@@ -119,9 +119,9 @@ def give():
 def chechit():
     if request.method == "POST":
         kod = request.form['kod']
-        result = db.users.find_one({"PIN": kod})
+        result = db.entrance.find_one({"PIN": kod})
         if result:
-            db.users.delete_one({"PIN": kod})
+            db.entrance.delete_one({"PIN": kod})
 
             data3 = "Заказал пропуск: " + str(result['Employee'])
             data3 += "(с IP: " + str(result['IP']) + ")"
