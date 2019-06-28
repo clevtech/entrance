@@ -105,35 +105,6 @@ def welcome3():
     return render_template('zayava.html', text="Код доступа: " + str(name))
 
 
-@app.route('/mobile/')
-def welcome():
-    return render_template('index3.html')
-
-
-@app.route('/give/', methods=['GET', 'POST'])
-def give():
-    return render_template('enter.html')
-
-
-@app.route('/give/check/', methods=['GET', 'POST'])
-def chechit():
-    if request.method == "POST":
-        kod = request.form['kod']
-        result = db.zayavki.find_one({"PIN": kod})
-        if result:
-            db.zayavki.delete_one({"PIN": kod})
-
-            data3 = "Заказал пропуск: " + str(result['Employee'])
-            data3 += "(с IP: " + str(result['IP']) + ")"
-            data3 += ", в кабинет: : " + str(result["Room"])
-            data3 += ", для гражданина: : " + str(result['Guest'])
-            send_tlg_msg(data3, ['-1001403922890'], open('/home/pi/entrance/static/face.png', "rb"))
-
-            return render_template('index2.html', text=Markup("Входите"))
-        else:
-            return render_template('index2.html', text=Markup("Вы ввели неправильный пароль"))
-
-
 if __name__ == '__main__':
     print(os.system("ls"))
     socketio.run(app, host='0.0.0.0', port=80, debug=True)
