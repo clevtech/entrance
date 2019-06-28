@@ -13,7 +13,7 @@ import requests
 import glob
 import base64
 import os
-from flask import Flask, render_template, session, request, json, jsonify, url_for, Markup, redirect
+from flask import Flask, render_template, session, request, json, jsonify, url_for, Markup, redirect, send_file
 import random
 import re
 from pprint import pprint
@@ -72,20 +72,19 @@ def send_image(botToken, imageFile, chat_id):
 
 
 def send_tlg_msg(msg, ids, photo):
-    file1 = None
     with open('./face.jpeg', 'wb') as file:
         file.write(photo)
-        file1 = file
-    imageFile = "./face.jpeg"
     for id in ids:
         try:
             from requests import Request, Session
 
-            head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + id + "&text=" + msg
+            head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + \
+                   id + "&text=" + msg
 
             print(requests.get(head))
 
-            head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + id
+            head2 = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendMessage?chat_id=" + \
+                    id
             files = {'photo': open('./face.jpeg', 'rb')}
 
             print(requests.post(head2, files=files))
@@ -132,14 +131,18 @@ def chechit():
         print(request.form['kod'])
         kod = request.form['kod']
         pic = base64.b64decode(request.form["img"])
+        with open('./face.jpeg', 'wb') as file:
+            file.write(pic)
+        return send_file('./face.jpeg', mimetype='image/jpeg')
+
         result = db.zayavki.find_one({"PIN": str(kod)})
         if result:
             db.zayavki.delete_one({"PIN": kod})
             logit(result)
             data3 = "Заказал пропуск: " + str(result['Employee'])
-            data3 += "(с IP: " + str(result['IP']) + ")"
-            data3 += ", в кабинет: : " + str(result["Room"])
-            data3 += ", для гражданина: : " + str(result['Guest'])
+            data3 += " (с IP: " + str(result['IP']) + ")"
+            data3 += ", в кабинет: " + str(result["Room"])
+            data3 += ", для гражданина: " + str(result['Guest'])
             send_tlg_msg(data3, ['-1001403922890'], pic)
 
             return render_template('index2.html', text=Markup("Входите"))
