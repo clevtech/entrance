@@ -80,9 +80,12 @@ def send_tlg_msg(msg, ids, photo):
             print(requests.get(head))
 
             head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendPhoto?chat_id=" + \
-                   id + "&photo=" + photo
+                   id
 
-            print(requests.get(head))
+            file = open('face.jpeg', 'rb')
+            files = {"photo": file}
+
+            print(requests.post(head, files=files))
 
 
 
