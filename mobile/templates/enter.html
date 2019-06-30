@@ -54,9 +54,8 @@
         <br>
       <form method = "POST" action='check/'>
       <input class="w3-black"  type="number" name="kod" value=""><br>
-          <input type="hidden" name="img" value=""><br>
       <br>
-      <input class="w3-black" type="button" value="Отправить" onclick="myFunction();submit();">
+      <input class="w3-black" type="button" value="Отправить" onclick="submit();">
       </form>
       </center>
     </div>
@@ -95,35 +94,5 @@
     <br>
     <br>
     <br>
-
-  <video id="player" width=0 controls autoplay></video><br>
-  <canvas id="canvas" width=320 height=240></canvas>
-  <br>
-  <br>
-  <br>
-  <br>
-
-    <script>
-      const player = document.getElementById('player');
-      const canvas = document.getElementById('canvas');
-      const context = canvas.getContext('2d');
-
-      const constraints = {
-        video: true,
-      };
-
-      // Attach the video stream to the video element and autoplay.
-      navigator.mediaDevices.getUserMedia(constraints)
-        .then((stream) => {
-          player.srcObject = stream;
-        });
-
-       function myFunction() {
-            context.drawImage(player, 0, 0, canvas.width, canvas.height);
-            context.rotate(Math.PI / 2);
-            document.getElementsByName("img")[0].setAttribute("value", canvas.toDataURL('image/jpeg'));
-        }
-    </script>
-
   </body>
   </html>

@@ -29,6 +29,8 @@ from pymongo import MongoClient
 # import datetime to deal with timestamps
 from datetime import datetime
 from binascii import a2b_base64
+import os
+
 
 
 client = MongoClient('mongodb://database:27017/')
@@ -67,9 +69,14 @@ def logit(req):
     db.zayavki.insert_one(item_doc)
 
 
-def send_tlg_msg(msg, ids, photo):
-    with open('face.jpeg', 'wb') as file:
-        file.write(photo)
+def save_face():
+    ip = "rtsp://192.168.81.218:8554/live"
+    import vlc
+    player = vlc.MediaPlayer(ip)
+    player.video_take_snapshot(0, 'face.png', 0, 0)
+
+
+def send_tlg_msg(msg, ids):
     for id in ids:
         try:
             from requests import Request, Session
@@ -82,7 +89,7 @@ def send_tlg_msg(msg, ids, photo):
             head = "https://api.telegram.org/bot636656567:AAGJNwvclwoJLHoice4DJkS_03H3m5Fpmso/sendPhoto?chat_id=" + \
                    id
 
-            file = open('face.jpeg', 'rb')
+            file = open('face.png', 'rb')
             files = {"photo": file}
 
             print(requests.post(head, files=files))
@@ -128,19 +135,21 @@ def chechit():
         # print(request)
         print(request.form['kod'])
         kod = request.form['kod']
-        pic = a2b_base64(request.form["img"].split(",")[1])
-        # pic = base64.b64decode(request.form["img"])
-        # pic = request.form["img"]
 
         result = db.zayavki.find_one({"PIN": str(kod)})
         if result:
-            db.zayavki.delete_one({"PIN": kod})
+            db.zayavki.delete_many({"PIN": kod})
             logit(result)
             data3 = "Заказал пропуск: " + str(result['Employee'])
             data3 += " (с IP: " + str(result['IP']) + ")"
             data3 += ", в кабинет: " + str(result["Room"])
             data3 += ", для гражданина: " + str(result['Guest'])
-            send_tlg_msg(data3, ['-1001403922890'], pic)
+
+            # TODO Make it work bitch
+
+            save_face()
+
+            send_tlg_msg(data3, ['-1001403922890'])
 
             return render_template('index2.html', text=Markup("Входите"))
         else:

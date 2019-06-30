@@ -1,4 +1,4 @@
 FROM python:3.7
 ADD . /cleverest_machine
 WORKDIR /cleverest_machine
-RUN pip3 install -r requirements.txt
+RUN apt install vlc && pip3 install -r requirements.txt
