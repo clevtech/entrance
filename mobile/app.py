@@ -30,20 +30,14 @@ from pymongo import MongoClient
 from datetime import datetime
 from binascii import a2b_base64
 import os
-from flask_socketio import SocketIO, emit, join_room, leave_room, \
-	close_room, rooms, disconnect
 
 
 client = MongoClient('mongodb://database:27017/')
 db = client.entrance
 
-async_mode = None
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-socketio = SocketIO(app, async_mode=async_mode)
-thread = None
-thread_lock = Lock()
 
 
 def write_to(request, pin):
@@ -97,8 +91,6 @@ def send_tlg_msg(msg, ids):
             files = {"photo": file}
 
             print(requests.post(head, files=files))
-
-
 
         except:
             print("No connection to telegram")
@@ -163,4 +155,4 @@ def chechit():
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
