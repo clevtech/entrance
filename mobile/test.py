@@ -1,6 +1,7 @@
-import vlc
+import rtsp
+# client = rtsp.Client(rtsp_server_uri='rtsp://192.168.81.218:8554/live')
+# client.read().show()
+# client.close()
 
-player = vlc.MediaPlayer('rtsp://192.168.81.218:8554/live')
-
-player.video_take_snapshot(0, 'snapshot.png', 0, 0)
-
+with rtsp.Client('rtsp://192.168.81.218:8554/live') as client:
+    client.read().rotate(270).save("face.png")

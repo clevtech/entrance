@@ -70,10 +70,9 @@ def logit(req):
 
 
 def save_face():
-    ip = "rtsp://192.168.81.218:8554/live"
-    import vlc
-    player = vlc.MediaPlayer(ip)
-    player.video_take_snapshot(0, 'face.png', 0, 0)
+    import rtsp
+    with rtsp.Client('rtsp://192.168.81.218:8554/live') as client:
+        client.read().rotate(270).save("face.png")
 
 
 def send_tlg_msg(msg, ids):
